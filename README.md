@@ -1,6 +1,6 @@
 # FiveFarmChiaClient
-5Farm Chia Client tool is a utility which get Client's farming status/ Progress and helps https://FiveFarm.app to draw and Monitor Enhanced analytics.
-Some customized Alert notifications are also available on https://FiveFarm.aap to get health status of Client's Farm.
+5Farm Chia Client tool is a utility which gets Client's farming status/ Progress and helps https://FiveFarm.app to draw Enhanced analytics.
+For monitoring, Some customized Alert notifications are also available on https://FiveFarm.aap to get health status of Client's Farm. 
 
 # How to Setup your FiveFarm ?
 1. Download and Install FiveFarm Desktop client (Linux / Windows) from https://FiveFarm.app
