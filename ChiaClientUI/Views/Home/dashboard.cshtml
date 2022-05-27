@@ -1,0 +1,174 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "";
+}
+<style>
+
+    html,
+    body {
+        height: 100%;
+        width: 99%; /*Added*/
+        margin: 0;
+        background-image: url(/images/bg.svg);
+    }
+
+    .box {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+        width: 100%; /*Added*/
+    }
+
+        .box .row {
+        }
+
+            .box .row.header {
+                flex: 0 1 auto;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .box .row.content {
+                flex: 1 1 auto;
+            }
+
+
+
+
+    .log_box {
+        background: #2A3142;
+        margin: 0% 5% 0% 5%;
+        width: 100%;
+        height: 93%; /*92*/
+    }
+
+    .log_label {
+        width: 95%;
+        margin: 0px 0px 0% 3%;
+        padding: 1% 0px 1% 0px;
+        text-align: left;
+        font-family: Open Sans;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 150%;
+        /* identical to box height, or 21px */
+        /* DarkMode/Light Grey 2 */
+
+        color: #C3CBEC;
+    }
+
+    .log_area {
+        width: 94%; /*95*/
+        height: 91%; /*Added*/
+        margin: 0px 0px 2% 3%;
+        padding: 2% 0px 0px 0px;
+        background: #222736;
+        font-family: Encode Sans;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 150%;
+        /* identical to box height, or 18px */
+        /* DarkMode/White */
+
+        color: #F6F6F6;
+    }
+
+    .logout {
+        font-family: Open Sans;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 150%;
+        /* identical to box height, or 21px */
+
+        text-align: center;
+        letter-spacing: -0.02em;
+        color: #FFFFFF;
+        text-align: left;
+        margin: 15px 0px 0% 5%;
+    }
+
+        .logout a {
+            color: #FFFFFF;
+        }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - 5Farm Client</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="box">
+        <div class="row header" style="margin: 0% 0% 0% 40%">
+            <img src="/images/icons/app-logo.svg" alt="logo" />
+        </div>
+        <div class="row content">
+            <div class="log_box">
+                <div class="log_label">Client Service Log</div>
+                <div>
+                    <textarea class="log_area" id="parameters" rows="30" readonly></textarea>
+                </div>
+            </div>
+            <div class="logout">
+                <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span>
+                        <img src="/images/icons/icon.png" alt=">" />
+                        Logout
+                    </span>
+                </a>
+            </div>
+                <label style="color: whitesmoke;"></label>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+
+<script>
+
+    const { ipcRenderer } = require("electron");
+
+    function getStatus() {
+        ipcRenderer.send("async-msg", "");
+    }
+
+    function AppendStatus(txt) {
+        var text = document.getElementById("parameters").value;
+        var lines = text.split(/\r|\r\n|\n/);
+        var count = lines.length;
+        if (count > 10000) {
+            document.getElementById("parameters").value = "";
+        }
+        document.getElementById("parameters").value += '\n' + txt;
+        document.getElementById("parameters").scrollTop = document.getElementById("parameters").scrollHeight;
+    }
+
+    //document.getElementById("async-msg").addEventListener("click", () => {
+    getStatus();
+    setInterval(getStatus, 3000);
+    //});
+
+    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+        var message = arg;
+        //alert(message);
+        AppendStatus(message);
+        //AppendStatus('---------------------------------------');
+
+    });
+        /*
+document.getElementById("sync-msg").addEventListener("click", () => {
+const reply = ipcRenderer.sendSync("sync-msg", "ping");
+const message = `Stop reply: ${reply}`;
+document.getElementById('sync-reply').innerHTML = message;
+});
+*/
+</script>

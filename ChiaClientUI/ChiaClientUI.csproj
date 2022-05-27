@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup> 
+    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows> 
+    <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX> 
+    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux> 
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsWindows)'=='true'">
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>warnings</Nullable>
+    <Product>5FarmChiaClient</Product>
+    <Authors>FiveriversTechnologies</Authors>
+    <Company>FiveriversTechnologies</Company>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(IsLinux)'=='true'">
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>_5FarmChiaClient</RootNamespace>
+	<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsLinux)'=='true'">
+    <PackagePrefix>5FarmChiaClient</PackagePrefix>
+    <PackageName>5FarmChiaClient_1.0.5</PackageName>
+    <Version>1.0.5</Version>
+    <Authors>FRT</Authors>
+    <Company>FRT</Company>
+    <!--
+      <PublishReadyToRun>True</PublishReadyToRun>
+    -->
+    <SelfContained>True</SelfContained>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ElectronNET.API" Version="13.5.1">
+      <!--<iconUrl>file:../../../wwwroot/images/icons/EyeVisible.png</iconUrl>-->
+    </PackageReference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Chia.ClinetCore\Chia.ClientCore.csproj" />
+    <ProjectReference Include="..\Chia.Common\Chia.Common.csproj" />
+    <ProjectReference Include="..\Chia.DB\Chia.DB.csproj" />
+    <ProjectReference Include="..\KeyCloakApi\KeyCloakApi.csproj" />
+  </ItemGroup>
+
+</Project>

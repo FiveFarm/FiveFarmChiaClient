@@ -1,0 +1,134 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        background-image: url(images/bg.svg);
+    }
+
+    .box {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+    }
+
+        .box .row {
+        }
+
+            .box .row.header {
+                flex: 0 1 auto;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .box .row.content {
+                flex: 1 1 auto;
+            }
+
+
+
+
+    .log_box {
+        background: #2A3142;
+        margin: 0% 5% 0% 5%;
+        width: 100%;
+        height: 92%;
+    }
+
+    .log_label {
+        width: 95%;
+        margin: 0px 0px 0% 3%;
+        padding: 1% 0px 1% 0px;
+        text-align: left;
+        font-family: Open Sans;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 150%;
+        /* identical to box height, or 21px */
+        /* DarkMode/Light Grey 2 */
+
+        color: #C3CBEC;
+    }
+
+    .log_area {
+        width: 95%;
+        margin: 0px 0px 2% 3%;
+        padding: 2% 0px 0px 0px;
+        background: #222736;
+        font-family: Encode Sans;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 150%;
+        /* identical to box height, or 18px */
+        /* DarkMode/White */
+
+        color: #F6F6F6;
+    }
+
+    .logout {
+        font-family: Open Sans;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 150%;
+        /* identical to box height, or 21px */
+
+        text-align: center;
+        letter-spacing: -0.02em;
+        color: #FFFFFF;
+        text-align: left;
+        margin: 15px 0px 0% 5%;
+    }
+        .logout a {
+            color: #FFFFFF;
+        }
+</style>
+
+<div class="box">
+    <div class="row header" style="margin: 0% 0% 0% 40%">
+        <img src="images/icons/app-logo.svg" alt="logo" />
+    </div>
+    <div class="row content">
+        <div class="log_box">
+            <div class="log_label">Client Service Log</div>
+            <div>
+                <textarea class="log_area" rows="25" readonly></textarea>
+            </div>
+        </div>
+        <div class="logout">
+            <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                <span>
+                    <img src="~/images/icons/icon.png" />
+                    Logout
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="outer_box">
+    <div class="header_logo"><img src="images/icons/app-logo.svg" alt="logo" /></div>
+    <div class="log_box">
+        <div class="log_label">Client Service Log</div>
+        <div>
+            <textarea class="log_area" readonly></textarea>
+        </div>
+        <div class="logout">Logout</div>
+    </div>
+</div>
+    <div style="margin:114px 108px 134px 109px; height:517px; background: #2A3142; border: 1px solid #32394E; box-sizing: border-box; border-radius: 0px 0px 5px 5px;"></div>
+    <div style="position: absolute; left: 12.99%; right: 12.89%; top: 26.74%; bottom: 20.96%; background: #222736; border: 1px solid #32394E; box-sizing: border-box;">
+                <textarea style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;"></textarea>
+            </div>
+            <div style="position: absolute; left: 12.99%; top: 21.93%; bottom: 80.34%; font-family: Open Sans; font-style: normal; font-weight: normal; font-size: 14px; line-height: 150%; color: #C3CBEC;">Client Service Log</div>
+
+    </div>-->
+<!--        <div style="width: 48px; height: 21px; left: 150px; top: 66px; font-family: Open Sans; font-style: normal; font-weight: bold; font-size: 14px; line-height: 150%; text-align: center; letter-spacing: -0.02em; color: #FFFFFF;">Logout</div>-->

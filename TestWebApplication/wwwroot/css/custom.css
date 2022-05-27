@@ -1,0 +1,274 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
+    -webkit-transition-delay: 9999s;
+}
+body {
+display:contents;
+justify-content:center
+}
+.login-pf {
+    background: url('../images/bg.svg')  no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-pf body {
+    background: none;
+}
+
+.login-pf-page-header {
+    display: none;
+}
+#kc-form-wrapper {
+    /* background-color: skyblue; */
+    margin-top: 10px;
+
+}
+
+#input-error {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.flex-parent {
+display: flex;
+align-items: center;
+flex-direction: column;
+}
+
+.flex-parent-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.input-container {
+    display: flex;
+flex-direction: row;
+align-items: center;
+    background-color: #32394E;
+    border-radius: 4px;
+    padding: 4px 8px 4px 10px;
+}
+
+.input-container:focus-within{
+    border: 2px solid #556EE6;
+}
+
+
+
+.pf-c-form-controlo {
+    background-color: #32394E;
+    border: none;
+    font-size: 0.93rem;
+    flex:1;
+    color: #ffffff;
+    padding: 5px 0.5rem;
+}
+
+
+.pf-c-form-controlo:hover, .pf-c-form-controlo:focus {
+    outline: none;
+    border: none;
+    box-shadow:none
+}
+
+#kc-login {
+    border-radius: 4px;
+    background: none;
+    background-color: #556EE6;
+    padding: 0.8rem;
+    font-weight: 400;
+}
+
+#kc-info{
+    display: none;
+    border: none;
+    outline: none;
+}
+
+#kc-form-options span {
+display: flex;
+}
+
+#kc-registration-container{
+text-align: center;
+margin-top: 1.5rem;
+}
+
+
+.input-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    align-items: center;
+    display: flex;
+    left: 0.5rem;
+    top: 0.5rem;
+}
+
+.link-pre input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.56rem;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    width: 1.56rem;
+    background-color: #eee;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .link-pre:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .link-pre input:checked ~ .checkmark {
+    background-color: #556ee6;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .link-pre input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .link-pre .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    align-self: center;
+    height: 0.62rem;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+
+#rememberMe {
+    /* width: 24px;
+    height: 24px; */
+    border-radius: 10px;
+}
+
+input[type=checkbox] {
+    position: relative;
+}
+
+.form-label {
+color: #bdbdbd;
+font-weight: 400;
+font-size: 0.87rem;
+}
+.flex-row {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.alert-icon {
+width: 1.5rem;
+height: 1.5rem;
+left: 0;
+top: 0;
+}
+
+.alert-text {
+margin-left: 4px;
+color: #ff375f;
+font-weight: 400;
+font-size: 0.87rem;
+}
+
+.link-pre {
+color: #bdbdbd;
+font-weight: 400;
+font-size: 0.87rem;
+margin-left: 0.93rem;
+padding: 0;
+}
+.link-text {
+margin-left: 4px;
+color: #307FE2;
+font-weight: 400;
+font-size: 0.87rem;
+}
+
+.welcome-text {
+font-weight: 400;
+font-size: 0.87rem;
+text-align: center;
+color: #bdbdbd;
+}
+
+.login-text {
+font-weight: 300;
+font-size: 1.25rem;
+text-align: center;
+color: #ffffff;
+line-height: 150%;
+}
+
+#kc-form { 
+    margin: 0 auto;
+    box-shadow: var(--pf-global--BoxShadow--md);
+    padding: 2.87rem;
+    align-items: center;
+    background: #2A3142;
+    border-radius: 4px;
+    margin-top: 3.12rem;
+}
+
+.header-logo {
+    width: 12.5rem;
+    height: auto;
+}
+
+.card-pfo {
+    margin: 0 auto;
+    max-width: 27.75rem;
+    background: none;
+
+}
+
+.header-logo {
+    width: 11.25rem;
+    height: auto;
+}
+.header-image {
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    display: flex;
+}
+
+.login-pf-header{
+    display: none;
+}
+

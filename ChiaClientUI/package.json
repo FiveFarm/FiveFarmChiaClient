@@ -1,0 +1,12 @@
+{
+  "email":"m.azeem@fiveriverstech.com",
+  "dependencies": {
+    "electron-builder": "^22.10.5"
+  },
+  "build": {
+  "linux": {
+    "target": "deb",
+    "icon": "../../../wwwroot/images/icons/EyeVisible.png"
+  }
+}
+}

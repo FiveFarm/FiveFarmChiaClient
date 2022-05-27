@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chia.Common\Chia.Common.csproj" />
+    <ProjectReference Include="..\Chia.DB\Chia.DB.csproj" />
+    <ProjectReference Include="..\Chia.Net\Chia.Net.csproj" />
+    <ProjectReference Include="..\KeyCloakApi\KeyCloakApi.csproj" />
+  </ItemGroup>
+
+</Project>

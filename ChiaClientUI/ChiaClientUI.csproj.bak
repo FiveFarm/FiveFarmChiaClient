@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>warnings</Nullable>
+    <Product>5FarmChiaClient</Product>
+    <Authors>FiveriversTechnologies</Authors>
+    <Company>FiveriversTechnologies</Company>
+	    <ApplicationIcon>wwwroot/images/icons/icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ElectronNET.API" Version="13.5.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chia.Common\Chia.Common.csproj" />
+    <ProjectReference Include="..\Chia.DB\Chia.DB.csproj" />
+    <ProjectReference Include="..\KeyCloakApi\KeyCloakApi.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,45 @@
+{
+  "executable": "ChiaClientUI",
+  "splashscreen": {
+    "imageFile": "/wwwroot/images/splash.gif"
+  },
+  "name": "ChiaClientUI",
+  "author": "",
+  "singleInstance": false,
+  "environment": "Production",
+  "build": {
+    "appId": "com.ChiaClientUI.app",
+    "productName": "ChiaClientUI",
+    "copyright": "Copyright © 2020",
+    "buildVersion": "1.0.0",
+    "compression": "maximum",
+    "directories": {
+      "output": "../../../bin/Desktop"
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": [ "**/*" ]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": [ "**/*" ]
+      },
+      "**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "../../../wwwroot/images/icons/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "../../../wwwroot/images/icons/icon.ico"
+    }
+  }
+}

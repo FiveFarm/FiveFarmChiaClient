@@ -1,0 +1,18 @@
+﻿<Window x:Class="TestFormsApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestFormsApp"
+        local:WindowEx.ShowIcon ="False"
+        mc:Ignorable="d"
+        Title="MainWindow" WindowStartupLocation="CenterScreen" SizeToContent="Height" Width="500" WindowStyle="ThreeDBorderWindow" ShowInTaskbar="False" ResizeMode="NoResize">
+    <Grid>
+        <StackPanel Orientation="Vertical" >
+        <Label VerticalContentAlignment="Center" Height="70" MaxWidth="472" Width="472" Margin="10,-2,10,0">
+            <TextBlock Name="messageLabel" TextWrapping="Wrap" Text="Label for Testing" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        </Label>
+        <Button Click="Button_Click" IsDefault="True" Content="OK" HorizontalAlignment="Right" Margin="0,10,10,10"  VerticalAlignment="Top" Width="75"/>
+        </StackPanel>
+    </Grid>
+</Window>

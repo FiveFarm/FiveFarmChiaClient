@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chia.ClinetCore\Chia.ClientCore.csproj" />
+    <ProjectReference Include="..\Chia.Common\Chia.Common.csproj" />
+    <ProjectReference Include="..\Chia.Net\Chia.Net.csproj" />
+    <ProjectReference Include="..\KeyCloakApi\KeyCloakApi.csproj" />
+    <ProjectReference Include="..\Chia.DB\Chia.DB.csproj" />
+</ItemGroup>
+
+</Project>

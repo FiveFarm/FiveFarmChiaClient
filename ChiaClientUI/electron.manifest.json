@@ -1,0 +1,63 @@
+{
+  "executable": "ChiaClientUI",
+  "splashscreen": {
+    "imageFile": "/wwwroot/images/splash.gif"
+  },
+  "name": "5FarmChiaClient",
+  "author": "",
+  "email":"",
+  "description":"Five Farm Chia Client.",
+  "category":"Utility",
+  "singleInstance": true,
+  "environment": "Development",
+  "build": {
+    "appId": "com.5FarmChiaClient.app",
+    "productName": "5FarmChiaClient",
+    "copyright": "Copyright © 2020",
+    "buildVersion": "1.0.33",
+    "compression": "maximum",
+    "directories": {
+      "output": "../../../bin/Desktop"
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": [ "**/*" ]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": [ "**/*" ]
+      },
+      "**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "../../../wwwroot/images/icons/icon.ico"
+    },
+    "linux": {
+      "target": "deb",
+      "icon": "~/Repo/fivefarm-client/ChiaClientUI/wwwroot/images/5FarmChiaClient.png",
+      "category": "Utility",
+      "description": "Five Farm Chia Client.",
+      "appId": "com.5FarmChiaClient.app",
+      "maintainer": "Stackify"
+    },
+    "deb": {
+      "depends": [ "libnss3" ],
+      "fpm": [
+        "--name=5FarmChiaClient"
+      ],
+      "icon": "~/Repo/fivefarm-client/ChiaClientUI/wwwroot/images/5FarmChiaClient.png"
+    },
+	"nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "../../../wwwroot/images/icons/icon.ico"
+    }
+  }
+}
