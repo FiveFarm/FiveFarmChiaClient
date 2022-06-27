@@ -185,7 +185,7 @@ support@fiverfarm.app
 
 #### 7. How can I contact you for any help or queries?
     You can contact us at support@fiverfarm.app
-<br />
+
 ---------------------------------------------------------------------------------------------------------
 <br />
 <br />
