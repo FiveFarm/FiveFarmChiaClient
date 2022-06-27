@@ -158,11 +158,11 @@ Continue using FiveFarm to manage full node plots as well as all the harvesters 
 
 For help or queries, contact us at
 support@fiverfarm.app 
-<br />
+
 ---------------------------------------------------------------------------------------------------------
 <br />
 <br />
-<br />
+
 # FAQs
 
 #### 1. Are my keys safe?
