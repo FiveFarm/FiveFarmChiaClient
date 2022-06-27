@@ -189,7 +189,7 @@ support@fiverfarm.app
 ---------------------------------------------------------------------------------------------------------
 <br />
 <br />
-<br />
+
 ## How to build FiveFarm client from source code ?
 
 #### Solution Information
