@@ -85,6 +85,24 @@ namespace Chia.ClientCore.Core
             {
                 CommonConstants.DeletePassphraseFiles();
 
+                try
+                {
+                    DateTime.TryParse(_settings.GetValue(SettingKeys.LastLogTimePoolError), out CommonConstants.LastLogTime_PoolStopped);
+                }
+                catch (Exception ex)
+                {
+                    CommonConstants.LastLogTime_PoolStopped = DateTime.MinValue;
+                    CommonConstants.SaveDebugLog($"Get LastLogTimePoolError: ex: {ex.Message}", false, true);
+                }
+                try
+                {
+                    DateTime.TryParse(_settings.GetValue(SettingKeys.LastLogTimeBlockFound), out CommonConstants.LastLogTime_BlockFound);
+                }
+                catch (Exception ex)
+                {
+                    CommonConstants.LastLogTime_PoolStopped = DateTime.MinValue;
+                    CommonConstants.SaveDebugLog($"Get LastLogTimeBlockFound: ex: {ex.Message}", false, true);
+                }
                 DateTime prevTime;
                 while (RunThread)
                 {
@@ -216,15 +234,12 @@ namespace Chia.ClientCore.Core
             LogMesssage = $"Getting Chia Status . . .";
             CommonConstants.SaveDebugLog($"Getting Chia Status . . .", false, true);
             string statusString = string.Empty;
-            if (postGlobalData)
-            {
-                statusString = await _chiaClient.GetChiaGlobalStatus(userId, clientId);
-            }
-            else
-            {
+            DateTime LastBlockDt = CommonConstants.LastLogTime_BlockFound;
+            DateTime LastPoolErrDt = CommonConstants.LastLogTime_PoolStopped;
+
                 bool IsConnected = !(string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(clientId));
                 statusString = await _chiaClient.GetChiaStatus(userId, clientId, IsConnected);
-            }
+          
             LogMesssage = $"Sending Chia Status to Server . . .";
             _wrapper.SendData(statusString);
             try
@@ -237,6 +252,23 @@ namespace Chia.ClientCore.Core
             {
                 LogMesssage = $"Error While Logging data:{ex.Message}";
                 CommonConstants.SaveDebugLog($"Exception in ProcessDataRequest: {ex.Message}", false, true);
+            }
+            try
+            {
+                if (LastBlockDt < CommonConstants.LastLogTime_BlockFound)
+                {
+                    LastBlockDt = CommonConstants.LastLogTime_BlockFound;
+                    _settings.SetValue(SettingKeys.LastLogTimeBlockFound, CommonConstants.LastLogTime_BlockFound.ToString());
+                }
+                if (LastPoolErrDt < CommonConstants.LastLogTime_PoolStopped)
+                {
+                    LastPoolErrDt = CommonConstants.LastLogTime_PoolStopped;
+                    _settings.SetValue(SettingKeys.LastLogTimePoolError, CommonConstants.LastLogTime_PoolStopped.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonConstants.SaveDebugLog($"Failed To Update Last Log Accessed Time for BlockFound / Pooling Error: {ex.Message}", false, true);
             }
             CommonConstants.SaveDebugLog($"Transaction Completed * * * * * * * * * * * * * * * * * * * * * * * * * * * * ", false, true);
             LogMesssage = $"Transaction Completed . . .";

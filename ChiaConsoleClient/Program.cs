@@ -83,6 +83,7 @@ namespace ChiaConsoleClient
                     {
                         token = api.Login(CommonConstants.AuthenticationUrl, user, pass).Result;
                         CommonConstants.Passphrase = passphrase;
+                        CommonConstants.EmailId = user;
                     }
                 }
                 catch (Exception ex)

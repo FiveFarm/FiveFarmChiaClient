@@ -33,6 +33,7 @@ namespace Chia.Net
             {
                 try
                 {
+                    if (_logsRepo != null)
                     _logsRepo.AddLog($" {value}");
                 }
                 catch (Exception ex) { }

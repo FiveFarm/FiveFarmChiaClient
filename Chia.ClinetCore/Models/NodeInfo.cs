@@ -12,9 +12,10 @@ namespace Chia.ClientCore.Models
         public string ClinetName { get; set; } = "5farm";
         public string UserId { get; set; } = "789";
         public string ClinetType { get; set; } = "5Farm";
+        public string EmailId { get; set; } = "email@domain.com";
         public override string ToString()
         {
-            string response = $"{{\"userId\":\"{UserId}\",\"clientId\":\"{ClinetId}\",\"clientName\":\"{ClinetName}\",\"clientType\":\"{ClinetType}\"}}";
+            string response = $"{{\"userId\":\"{UserId}\",\"clientId\":\"{ClinetId}\",\"clientName\":\"{ClinetName}\",\"clientType\":\"{ClinetType}\",\"emailId\":\"{EmailId}\"}}";
             return response;
         }
     }

@@ -10,5 +10,7 @@ namespace Chia.DB.Common
     {
         public const string TokenKeyName = "token";
         public const string TokenUserName = "username";
+        public const string LastLogTimeBlockFound = "TimeCheckBlockFound";
+        public const string LastLogTimePoolError = "TimeCheckPoolError";
     }
 }

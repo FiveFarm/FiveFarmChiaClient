@@ -15,9 +15,6 @@ namespace ChiaClientUI
 {
     public class Program
     {
-        static string chiaClientServiceName = "ChiaClientService";
-        static string chiaClientUIName = "ChiaClientUI";
-
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

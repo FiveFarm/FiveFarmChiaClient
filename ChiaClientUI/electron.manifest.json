@@ -4,9 +4,8 @@
     "imageFile": "/wwwroot/images/splash.gif"
   },
   "name": "5FarmChiaClient",
-  "author": "",
-  "email":"",
-  "description":"Five Farm Chia Client.",
+    "email": "support@fivefarm.app",
+    "url": "https://fivefarm.app",
   "category":"Utility",
   "singleInstance": true,
   "environment": "Development",
@@ -14,7 +13,7 @@
     "appId": "com.5FarmChiaClient.app",
     "productName": "5FarmChiaClient",
     "copyright": "Copyright © 2020",
-    "buildVersion": "1.0.33",
+    "buildVersion": "1.0.38",
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"

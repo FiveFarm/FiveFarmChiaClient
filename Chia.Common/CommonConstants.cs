@@ -18,6 +18,20 @@ namespace Chia.Common
         #region Class Members
 
         public static string Passphrase;
+        public static string EmailId { get; set; }
+        public static JObject Error_Codes { get => error_Codes; set => error_Codes = value; }
+
+        private static JObject error_Codes = new JObject();
+
+        public static void AddError_Code(string param, string val)
+        {
+            //JObject obj = new JObject();
+            //obj.Add(param, val);
+            if (!error_Codes.ContainsKey(param))
+                error_Codes.Add(param, val);
+            else
+            { }
+        }
 
         public static string EndPoint
         {
@@ -45,6 +59,11 @@ namespace Chia.Common
 #endif
             }
         }
+
+        public static bool IsSavePlottingLog = true;
+        public static DateTime LastLogTime_BlockFound = DateTime.MinValue;
+        public static DateTime LastLogTime_PoolStopped = DateTime.MinValue;
+
         static string BaseUrl => $"{EndPoint}/auth/realms/{Tag}/protocol/openid-connect/";
         public const string SocketAddress = "wss://c32f076pz6.execute-api.us-east-1.amazonaws.com/";
         public static string AuthenticationUrl => $"{BaseUrl}token";
@@ -59,7 +78,7 @@ namespace Chia.Common
             get
             {
                 return Environment.OSVersion.Platform == PlatformID.Win32NT ?
-                 (@$"{DataFolder}\{System.Guid.NewGuid().ToString()}.sqI") : 
+                 (@$"{DataFolder}\{System.Guid.NewGuid().ToString()}.sqI") :
                  (@$"{DataFolder}/{System.Guid.NewGuid().ToString()}.sqI");
             }
         }
@@ -115,7 +134,7 @@ namespace Chia.Common
         }
 
 
-        public static string AppVersion { get => "v1.0.33"; }
+        public static string AppVersion { get => "v1.0.38"; }
         #endregion
 
         #region Private Methods
@@ -194,14 +213,36 @@ namespace Chia.Common
         }
         #endregion
 
-        public enum ErrorCodes : int
-        {
-            NONE = -1,
-            OK = 0,
-            Blank_Response = 1,
-            CLI_Missing_RequiredData = 2,
-            LogFile_Missing_RequiredData = 3,
-            RPC_Missing_RequiredData = 4,
-        }
+    }
+    public enum ErrCodeMnCtg : int
+    {
+        GetBlockChainState = 1,
+        GetConnections_fullnode = 2,
+        GetChallenges_farmer = 3,
+        farmed_unfinished_block = 4,
+        poolErrorWarnings = 5,
+        farmerlatestBlockChallanges = 6,
+        GetNetworkInfo_fullnode = 7,
+        GetFarmingStatus = 8,
+        GetSyncStatus = 9,
+        GetHeightInfo_wallet = 10,
+        GetPoolState_farmer = 11,
+        GetPointsFoundSinceStart = 12,
+        GetPoolsFromPlotNFT2 = 13,
+        UpdateConnectedFarmerList = 14,
+        UpdateConnectedHravesterList = 15,
+
+    }
+
+    public enum ErrCodesSbCtg : int
+    {
+        NONE = -1,
+        OK = 0,
+        Blank_Response = 1,
+        MissingRequiredData,
+        Mismatched,
+        Invalid,
+        Syncing,
+
     }
 }

@@ -263,6 +263,7 @@ namespace Chia.Net.CLI_Interface
 
                     DateTime st = DateTime.Now;
                     cmd.WaitForExit((timeout * 1000));
+                    CommonConstants.DeletePassphraseFiles();
                     TimeSpan ts = DateTime.Now - st;
                     bool SuggestionDisplay = true;
 
@@ -439,13 +440,14 @@ namespace Chia.Net.CLI_Interface
             return keyringpath;
         }
 
-        public static JArray GetChallenges(out Common.CommonConstants.ErrorCodes ErrCode)
+        public static JArray GetChallenges()
         {
-            ErrCode = Common.CommonConstants.ErrorCodes.NONE;
             string result = ReadCommand("farm challenges");
 
             if (string.IsNullOrEmpty(result))
-                ErrCode = Common.CommonConstants.ErrorCodes.Blank_Response;
+            {
+                CommonConstants.AddError_Code("gc", $"{(int)ErrCodeMnCtg.GetChallenges_farmer},{(int)ErrCodesSbCtg.Blank_Response}"); //Common.CommonConstants.ErrorCodes.Blank_Response;
+            }
 
             IEnumerable<string> lines = result.Split(new char[] { '\n' });
             Common.CommonConstants.SaveDebugLog($"GetChallenges: Length:{lines.Count()}", false, true);
@@ -482,8 +484,10 @@ namespace Chia.Net.CLI_Interface
             }
 
             if (!string.IsNullOrEmpty(result) && finalString.Count <= 0)
-                ErrCode = Common.CommonConstants.ErrorCodes.CLI_Missing_RequiredData;
-
+            {
+                var val = $"{((int)ErrCodeMnCtg.GetChallenges_farmer).ToString()},{((int)ErrCodesSbCtg.MissingRequiredData).ToString()}";
+                CommonConstants.AddError_Code("gc", val);
+            }
             return finalString;
         }
 
@@ -492,6 +496,9 @@ namespace Chia.Net.CLI_Interface
             string result = ReadCommand("farm summary");
 
             string[] lines = result.Split(new char[] { '\n' });
+
+            if (lines == null || lines.Length <= 0 || !result.Contains("Farming status"))
+                CommonConstants.AddError_Code("gfs", $"{(int)ErrCodeMnCtg.GetFarmingStatus},{(int)ErrCodesSbCtg.Blank_Response}");
 
             totalHarvesterPlots = 0;
             JObject finalResponse = new JObject();
@@ -571,12 +578,16 @@ namespace Chia.Net.CLI_Interface
             try
             {
                 string result = ReadCommand("show -s");
+                string startStr = "Current Blockchain Status: ";
+                string endStr = "Peak";
+
+                //string result = @"Current Blockchain Status: Not Synced. Peak height: 2195441
+                //Time: Fri Jul 01 2022 16:09:27 Pakistan Standard Time                  Height:    2195441";
+                if (result == null || !result.Contains(startStr))
+                    CommonConstants.AddError_Code("gss", $"{(int)ErrCodeMnCtg.GetSyncStatus},{(int)ErrCodesSbCtg.Blank_Response}");
 
                 if (string.IsNullOrEmpty(prevStatus) || !result.Contains(prevStatus))
                 {
-                    string startStr = "Current Blockchain Status: ";
-                    string endStr = "Peak:";
-
                     if (result.Contains(startStr) && result.Contains(endStr))
                     {
                         int strtIndex = result.IndexOf(startStr) + startStr.Length;
@@ -584,6 +595,8 @@ namespace Chia.Net.CLI_Interface
                         int countToCopy = endIndex - strtIndex;
                         string status = result.Substring(strtIndex, countToCopy);
 
+                        if (!string.IsNullOrWhiteSpace(status))
+                        {
                         if (status.Contains("Syncing"))
                         {
                             syncAlert.Add("synced", "Syncing");
@@ -592,8 +605,16 @@ namespace Chia.Net.CLI_Interface
                         else
                         {
                             status = status.Trim();
+                                if (status.EndsWith("."))
+                                    status = status.Replace(".", "");
                             syncAlert.Add("synced", status);
                             prevStatus = status;
+                        }
+                    }
+                    else
+                    {
+                            CommonConstants.SaveDebugLog($"Warning: Empty Sync Status-> Current Read: {result.Trim()}, Prev: {prevStatus}", false, true);
+                            syncAlert.Add("synced", string.IsNullOrWhiteSpace(prevStatus) ? "Unknown." : prevStatus);
                         }
                     }
                     else

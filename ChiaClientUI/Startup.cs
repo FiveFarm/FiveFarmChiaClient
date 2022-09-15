@@ -1,4 +1,3 @@
-using Chia.ClientCore.Core;
 using Chia.Common;
 using Chia.DB;
 using Chia.DB.Repositories;
@@ -28,7 +27,7 @@ namespace ChiaClientUI
         {
             Configuration = configuration;
         }
-        Worker wrk = null;
+        Chia.ClientCore.Core.Worker wrk = null;
 
         public IConfiguration Configuration { get; }
 

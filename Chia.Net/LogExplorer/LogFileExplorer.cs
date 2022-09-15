@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Chia.Common;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,7 +47,7 @@ namespace Chia.Net.LogExplorer
             return height;
         }
         */
-        public static JArray GetLatestAttemptedProofs(List<string> fileLines, JArray challenges, ref Common.CommonConstants.ErrorCodes errCode_LAP)
+        public static JArray GetLatestAttemptedProofs(List<string> fileLines, JArray challenges)
         {
             string firstStringToCheck = "harvester chia.harvester.harvester: INFO     ";
             string secondStringToCheck = "plots were eligible for farming ";
@@ -54,8 +55,8 @@ namespace Chia.Net.LogExplorer
             List<string> validLines = fileLines.Where((x) => x.Contains(firstStringToCheck) && x.Contains(secondStringToCheck)).TakeLast(10).ToList();
             Common.CommonConstants.SaveDebugLog($"GetLatestAttemptedProofs: valid lines Length:{validLines.Count()}", false, true);
 
-            if (errCode_LAP == Common.CommonConstants.ErrorCodes.NONE && (validLines == null || validLines.Count == 0))
-                errCode_LAP = Common.CommonConstants.ErrorCodes.LogFile_Missing_RequiredData;
+            if ((validLines == null || validLines.Count == 0))
+                CommonConstants.AddError_Code("gltp", $"{(int)ErrCodeMnCtg.GetChallenges_farmer},{(int)ErrCodesSbCtg.MissingRequiredData}");
 
             JArray finalString = new JArray();
             JObject proofObject;
@@ -141,13 +142,16 @@ namespace Chia.Net.LogExplorer
             return record;
         }
 
-        public static JArray GetLatestFarmedBlocks(List<string> fileLines, JArray challenges, ref Common.CommonConstants.ErrorCodes errCode_LAP)
+        public static JArray GetLatestFarmedBlocks(List<string> fileLines, JArray challenges)
         {
             string firstStringBlockFound = "Farmed unfinished_block ";
             string secondStringBlockFound = ", cost:";
 
             List<string> validLines = fileLines.Where((x) => x.Contains(firstStringBlockFound) && x.Contains(secondStringBlockFound)).TakeLast(10).ToList();
             Common.CommonConstants.SaveDebugLog($"GetLatestFarmedBlocks: ValidLines Length:{validLines.Count()}", false, true);
+
+            if (validLines == null || validLines.Count <= 0)
+                CommonConstants.AddError_Code("glfb", $"{(int)ErrCodeMnCtg.farmed_unfinished_block},{(int)ErrCodesSbCtg.MissingRequiredData}");
 
             JArray finalString = new JArray();
             JObject blockObject;
@@ -167,7 +171,7 @@ namespace Chia.Net.LogExplorer
         private static JObject ParseString_Block(string staticString, JArray challenges)
         {
             string challengePriorString = "Farmed unfinished_block ";
-            string spPriorString = "SP: ";
+            string spPriorString = ", SP: ";
             string validationTimePriorString = ", validation time: ";
             string costPriorString = ", cost: ";
 
@@ -190,6 +194,14 @@ namespace Chia.Net.LogExplorer
                 time = staticString.Substring(0, staticString.IndexOf(space));
                 if (!DateTime.TryParse(time, out timeValue)) time = "";
             }
+
+            DateTime OnePoint5Days = DateTime.Now.AddHours(-12);
+            OnePoint5Days = new DateTime(OnePoint5Days.Year, OnePoint5Days.Month, OnePoint5Days.Day, 0, 0, 0);
+
+            //If Alert Notification has been sent once time then dont repeat it
+            timeValue = timeValue.AddMilliseconds((-1) * timeValue.Millisecond); //Made Millisecond component to zero
+            if (timeValue == DateTime.MinValue || timeValue <= CommonConstants.LastLogTime_BlockFound || timeValue < OnePoint5Days)
+                return null;
 
             if (staticString.Contains(challengePriorString))
             {
@@ -228,8 +240,9 @@ namespace Chia.Net.LogExplorer
                 record.Add("time", time);
                 record.Add("sp", totalPlotsValue);
                 record.Add("validation_time", validationTime);
-                record.Add("cost", proofsValue);
+                record.Add("cost", cost);
             }
+            CommonConstants.LastLogTime_BlockFound = timeValue;
             return record;
         }
 
@@ -242,7 +255,6 @@ namespace Chia.Net.LogExplorer
             return challengHashFound["Hash"].ToString();
         }
 
-        static DateTime LastLogTime = new DateTime();
         public static JArray GetPoolErrorWarnings(List<string> fileLines)
         {
             List<string> strsToSearch = new List<string>();
@@ -251,9 +263,9 @@ namespace Chia.Net.LogExplorer
             strsToSearch.Add("ERROR    Error in pooling");
             strsToSearch.Add("WARNING  GET /farmer response:");
             strsToSearch.Add("WARNING  POST /farmer response:");
-            strsToSearch.Add("ERROR Exception in GET /pool_info");
-            strsToSearch.Add("harvester chia.harvester.harvester: WARNING Not farming any plots on this harvester");
-            strsToSearch.Add("farmer chia.farmer.farmer         : ERROR    Harvester ");
+            strsToSearch.Add("ERROR    Exception in GET /pool_info"); //
+            //strsToSearch.Add("harvester chia.harvester.harvester: WARNING Not farming any plots on this harvester");
+            //strsToSearch.Add("farmer chia.farmer.farmer         : ERROR    Harvester ");
             strsToSearch.Add(": INFO     Websocket exception. Closing websocket with chia_harvester code =");
 
             List<string> ErrorWarningLines = new List<string>();
@@ -307,27 +319,28 @@ namespace Chia.Net.LogExplorer
 
             if (!string.IsNullOrEmpty(time) && timeValue != DateTime.MinValue)
             {
+                timeValue = timeValue.AddMilliseconds(-1 * timeValue.Millisecond);
                 //If Already reported log found then skip it //Compare with Time
-                if (timeValue >= OnePoint5Days && timeValue > LastLogTime) //Only "Todays + 12 hours of Prev day" Selected Error/Warnings will be reported
+                if (timeValue >= OnePoint5Days && timeValue > CommonConstants.LastLogTime_PoolStopped) //Only "Todays + 12 hours of Prev day" Selected Error/Warnings will be reported
                 {
                     if (msg != "" && time != "")
                     {
                         record = new JObject();
                         record.Add("time", time);
                         record.Add("message", msg);
-                        LastLogTime = timeValue;
+                        CommonConstants.LastLogTime_PoolStopped = timeValue;
                     }
                 }
             }
             return record;
         }
 
-        public static (JArray, JArray, JArray) GetDataFromLog(JArray challenges, ref Common.CommonConstants.ErrorCodes errCode_LAP)
+        public static (JArray, JArray, JArray) GetDataFromLog(JArray challenges)
         {
             List<string> fileLines = InitLogLines();
 
-            JArray attemptedProofs = GetLatestAttemptedProofs(fileLines, challenges, ref errCode_LAP);
-            JArray farmed_unfinished_blocks = GetLatestFarmedBlocks(fileLines, challenges, ref errCode_LAP);
+            JArray attemptedProofs = GetLatestAttemptedProofs(fileLines, challenges);
+            JArray farmed_unfinished_blocks = GetLatestFarmedBlocks(fileLines, challenges);
             JArray poolErrorWarnings = GetPoolErrorWarnings(fileLines);
             //string height = GetLastHeight(fileLines);
 

@@ -1,12 +1,14 @@
 {
-  "email":"m.azeem@fiveriverstech.com",
+  "url":"https://github.com/FiveFarm/FiveFarmChiaClient#Readme",
+  "projectUrl": "https://github.com/FiveFarm/FiveFarmChiaClient#Readme",  
+  "email":"support@fivefarm.app",
   "dependencies": {
     "electron-builder": "^22.10.5"
   },
   "build": {
   "linux": {
     "target": "deb",
-    "icon": "../../../wwwroot/images/icons/EyeVisible.png"
+    "icon": "../../../wwwroot/images/5-farm-chia-client.png"
   }
 }
 }

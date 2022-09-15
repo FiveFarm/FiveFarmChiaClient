@@ -87,7 +87,7 @@
 
                                     <div class="form-group">
                                         <div class="flex-row">
-                                            <label for="Passphrase" class="form-label">Passphrase</label>
+                                            <label for="Passphrase" class="form-label" title="Passphrase is required if it is set up on chia client else you can leave it empty.">Passphrase</label>
                                         </div>
 
 
@@ -95,7 +95,8 @@
                                             <div class="input-icon">
                                                 <img src="~/images/icons/lock.svg">
                                             </div>
-                                            <input asp-for="Passphrase" tabindex="2" id="passphrase" placeholder="Enter passphrase" class="pf-c-form-controlo" value="" name="passphrase" type="password" autocomplete="off">
+                                            <input asp-for="Passphrase" tabindex="2" id="passphrase" title="Passphrase is required if it is set up on chia client else you can leave it empty." placeholder="Enter passphrase" class="pf-c-form-controlo" value="" name="passphrase" type="password" autocomplete="off">
+                                            
                                             <div class="pf-icon-key">
                                                 <img name="ImgPw" height="25" width="25" src="~/images/icons/EyeVisible.png" onclick="myFunction('passphrase')" />
                                             </div>

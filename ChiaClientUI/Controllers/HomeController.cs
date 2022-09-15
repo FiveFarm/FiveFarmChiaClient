@@ -2,6 +2,8 @@
 using Chia.DB;
 using Chia.DB.Common;
 using Chia.DB.Repositories;
+using Chia.Net.CLI_Interface;
+//using ChiaClientService.Common;
 using ChiaClientUI.Models;
 using ElectronNET.API;
 using KeyCloakApi;
@@ -39,10 +41,20 @@ namespace ChiaClientUI.Controllers
             //    loginModel.UserName = userEmail.ToString();
             //}
         }
-
+        static bool IsLogout = false;
         public IActionResult Index()
         {
             ViewData["AppVersion"] = CommonConstants.AppVersion;
+            if (IsLogout)
+            {
+                Chia.Net.clsStatus.AddLogMesssage($"IsLogout: {IsLogout}");
+                _settings.SetValue(SettingKeys.TokenKeyName, "");
+            }
+            else
+            {
+                IsLogout = true;
+                Chia.Net.clsStatus.AddLogMesssage($"IsLogout: {IsLogout}");
+            }
             return View();
         }
 

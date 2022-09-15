@@ -90,12 +90,14 @@ namespace Chia.ClientCore.Core
 
         public async Task<string> GetChiaStatus(string userId, string clientId, bool connected)
         {
+            CommonConstants.Error_Codes = new JObject();
             con.RemoveAll();
             con.Add("connected", connected ? "1" : "0");
             _info.UserId = userId;
             _info.ClinetId = clientId;
             _info.ClinetName = NodeIdentification.GetHostName();
-            CommonConstants.SaveDebugLog($"ClientName:{_info.ClinetName}",false,true);
+            _info.EmailId = CommonConstants.EmailId;
+            CommonConstants.SaveDebugLog($"ClientName:{_info.ClinetName}", false, true);
 
             string statusString = "";
             //get_network_info
@@ -105,11 +107,11 @@ namespace Chia.ClientCore.Core
             string blockChainState = await _fullNode.GetBlockChainState();
             string fullNodeConnections = await _fullNode.GetConnections();
 
-            JArray farmerlatestBlockChallanges = CommandLineExec.GetChallenges(out CommonConstants.ErrorCodes errCode_LAP);
+            JArray farmerlatestBlockChallanges = CommandLineExec.GetChallenges();
             string farmerNetwork = await _farmer.GetConnections();
 
-            (JArray lastAttemptedProofs, JArray farmed_unfinished_block, JArray poolErrorWarnings) = 
-                LogFileExplorer.GetDataFromLog(farmerlatestBlockChallanges, ref errCode_LAP);
+            (JArray lastAttemptedProofs, JArray farmed_unfinished_block, JArray poolErrorWarnings) =
+                LogFileExplorer.GetDataFromLog(farmerlatestBlockChallanges);
             string height = await _wallet.GetHeightInfo();
 
             string network_info = await _fullNode.GetNetworkInfo();
@@ -119,8 +121,6 @@ namespace Chia.ClientCore.Core
 
             string pools_rpc = await _farmer.GetPoolState();
             Dictionary<string, Chia.Net.PoolInfo> launcherId_PointsStart_Pair = new Dictionary<string, Chia.Net.PoolInfo>();
-            JArray Error_Codes = new JArray();
-            JObject err = new JObject();
 
             if (!string.IsNullOrEmpty(pools_rpc) && pools_rpc.Contains("points_found_since_start"))
             {
@@ -136,8 +136,8 @@ namespace Chia.ClientCore.Core
             }
             else
             {
-                err.Add("lap_rpc", "1");
-                Error_Codes.Add(err);
+                string val = $"{((int)ErrCodeMnCtg.GetPointsFoundSinceStart).ToString()},{ ((int)ErrCodesSbCtg.MissingRequiredData).ToString()}";
+                CommonConstants.AddError_Code("lap", val);
             }
 
             if (launcherId_PointsStart_Pair == null) launcherId_PointsStart_Pair = new Dictionary<string, Chia.Net.PoolInfo>();
@@ -192,11 +192,6 @@ namespace Chia.ClientCore.Core
             //JObject syncAlert = SetSyncStatus(ref blockChainState, syncPevAlert);
             // stoppedPooling = FindStoppedFarmingToPool(ref launcherId_PointsStart_Pair);
             SetSyncStatus(ref blockChainState);
-
-            err = new JObject();
-            err.Add("lap", ((int)errCode_LAP).ToString());
-            Error_Codes.Add(err);
-
             statusString = $"{{ " +
                               $"\"action\":\"onNodeMessage\"," +
                               $"\"info\":{_info.ToString()}," +
@@ -217,7 +212,7 @@ namespace Chia.ClientCore.Core
                               $"\"dashboardtotals\":{Pools.Result.Item2.ToString()}" +
                               "," +
                               $"\"local_ips\":{LocalIPAddress.ToString()}," +
-                              $"\"errorcodes\":{Error_Codes.ToString()}," +
+                              $"\"errorcodes\":{CommonConstants.Error_Codes.ToString()}," +
                               $"\"connection\":{con.ToString()}" +
                               "," +
                               $"\"alerts\":" +
